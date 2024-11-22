@@ -42,27 +42,41 @@ public class ClimaService {
         double temperaturaMinima = jsonObject.getAsJsonObject("main").get("temp_min").getAsDouble();
         double temperaturaMaxima = jsonObject.getAsJsonObject("main").get("temp_max").getAsDouble();
         String descripcion = jsonObject.getAsJsonArray("weather").get(0).getAsJsonObject().get("description").getAsString();
+        //double lluvia = jsonObject.getAsJsonObject("rain").get("1h").getAsDouble();
+        String lluvia = "...";
 
-        Clima respuestaInformacion = new Clima(nombreCiudad, temperaturaActual, sensacionTermica, temperaturaMinima, temperaturaMaxima, descripcion);
+        if(jsonObject.has("rain")){
+            JsonObject rainJsonObject = jsonObject.get("rain").getAsJsonObject();
+
+            lluvia = rainJsonObject.has("1h") ?
+                    rainJsonObject.get("1h").getAsString():
+                    rainJsonObject.get("3h").getAsString();
+            lluvia += " litros por metro cúbico";
+           // double lluvia = jsonObject.getAsJsonObject("rain").get("1h").getAsDouble();
+            System.out.println("Presencia de lluvia");
+            }
+
+        Clima respuestaInformacion = new Clima(nombreCiudad, temperaturaActual, sensacionTermica, temperaturaMinima, temperaturaMaxima, lluvia,descripcion);
         presentarReporte(respuestaInformacion);
     }
     public static void presentarReporte(Clima reporte) {
         DateTimeFormatter formatterDay = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         DateTimeFormatter formatterHour = DateTimeFormatter.ofPattern("HH:mm");
 
-        String reporteEnTexto = "--------------------------\n" +
+        String reporteEnTexto = "******************************************\n" +
                 "Reporte del Clima: \n" +
                 "Ciudad: " + reporte.getNombre() + "\n" +
                 "Fecha: " + reporte.getFechaDeSolicitud().format(formatterDay) + "\n" +
                 "Horario: " + reporte.getFechaDeSolicitud().format(formatterHour) + "\n" +
                 "\n" +
-                "Temperatura actual: " + reporte.getTemperaturaActual() + "\n" +
-                "Sensación Térmica: " + reporte.getSensacionTermica() + "\n" +
+                "Temperatura actual: " + reporte.getTemperaturaActual() + "ºC" + "\n" +
+                "Sensación Térmica: " + reporte.getSensacionTermica() + "ºC" +"\n" +
                 "Descripcion: " + reporte.getDescripcion() + "\n" +
                 "\n" +
-                "Temperatura mínima: " + reporte.getTemperaturaMinima() + "\n" +
-                "Temperatura máxima: " + reporte.getTemperaturaMaxima() + "\n" +
-                "--------------------------";
+                "Temperatura mínima: " + reporte.getTemperaturaMinima() + "ºC" + "\n" +
+                "Temperatura máxima: " + reporte.getTemperaturaMaxima() + "ºC" +"\n" +
+                "Lluvia: " + reporte.getLluvia() +"\n" +
+                "*******************************************";
         System.out.println(reporteEnTexto);
     }
 

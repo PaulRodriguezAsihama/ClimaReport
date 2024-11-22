@@ -18,8 +18,12 @@ public class Clima {
     private double temperaturaMinima;
     @SerializedName("temp_max")
     private double temperaturaMaxima;
+    @SerializedName("1h")
+    private String lluvia;
     @SerializedName("description")
     private String descripcion;
+
+
 
     public Clima() {
     }
@@ -29,14 +33,18 @@ public class Clima {
                  double sensacionTermica,
                  double temperaturaMinima,
                  double temperaturaMaxima,
-                 String descripcion) {
+                 String lluvia,
+                 String descripcion
+                 ) {
         this.nombre = nombre;
         this.fechaDeSolicitud = LocalDateTime.now();
         this.temperaturaActual = temperaturaActual;
         this.sensacionTermica = sensacionTermica;
         this.temperaturaMinima = temperaturaMinima;
         this.temperaturaMaxima = temperaturaMaxima;
+        this.lluvia= lluvia;
         this.descripcion = descripcion;
+
     }
 
     public String getNombre() {
@@ -87,6 +95,14 @@ public class Clima {
         this.temperaturaMaxima = temperaturaMaxima;
     }
 
+    public String getLluvia() {
+        return lluvia;
+    }
+
+    public void setLluvia(String lluvia) {
+        this.lluvia = lluvia;
+    }
+
     public String getDescripcion() {
         return descripcion;
     }
@@ -94,6 +110,7 @@ public class Clima {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
     @Override
     public String toString() {
         return "ReporteDelClima{" +
@@ -103,6 +120,7 @@ public class Clima {
                 ", sensacionTermica=" + sensacionTermica +
                 ", temperaturaMinima=" + temperaturaMinima +
                 ", temperaturaMaxima=" + temperaturaMaxima +
+                ",lluvia=" + lluvia +
                 ", condicionClimatica='" + descripcion + '\'' +
                 '}';
     }
